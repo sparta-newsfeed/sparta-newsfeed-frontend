@@ -34,13 +34,13 @@ const ArticleDetail = () => {
             <h2>{mockDetail.title}</h2>
             <div className="media">
               <div className="media-body">
-                <label style={{ width: "70%" }}>
+                <label style={{ width: "65%" }}>
                   작성자 : {mockDetail.author}
                 </label>
-                <span style={{ width: "15%" }}>
+                <span style={{ width: "25%" }}>
                   수정일 : {mockDetail.lastUpdatedAt}
                 </span>
-                <span style={{ width: "15%" }}>
+                <span style={{ width: "10%" }}>
                   추천 : {mockDetail.likeCount}
                 </span>
               </div>

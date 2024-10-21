@@ -42,7 +42,7 @@ function CustomNavbar() {
             onClick={() => navigation("/articles")}
             style={{ cursor: "pointer" }}
           >
-            Navbar scroll
+            Newsfeed
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
