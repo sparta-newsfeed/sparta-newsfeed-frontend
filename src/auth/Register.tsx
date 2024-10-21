@@ -34,6 +34,15 @@ const Register = () => {
             </Col>
           </Form.Group>
 
+          <Form.Group as={Row} className="mb-3">
+            <Form.Label column sm={3}>
+              이메일
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control type="email" placeholder="Email" />
+            </Col>
+          </Form.Group>
+
           <Form.Group
             as={Row}
             className="mb-3"
