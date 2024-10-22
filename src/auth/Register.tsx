@@ -1,4 +1,7 @@
 import styled from "@emotion/styled";
+import axios from "axios";
+import { LOCAL_HOST } from "constants/constants";
+import { useState } from "react";
 import { Card } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -7,21 +10,56 @@ import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    username: "",
+    nickname: "",
+    password: "",
+    role: "USER",
+    checkPassword: "",
+  });
+
   const navigate = useNavigate();
 
-  const handleNavigate = () => {
-    navigate("/");
+  const handleFormChanger = (event: React.FormEvent<HTMLFormElement>) => {
+    const { name, value } = event.target as HTMLFormElement;
+    setUserInfo((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
   };
+
+  const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(userInfo);
+    const response = await axios.post(
+      LOCAL_HOST + "/api/auth/signup",
+      JSON.stringify(userInfo),
+      {
+        headers: {
+          "Content-Type": `application/json`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      alert("회원가입 성공");
+      navigate("/");
+    } else {
+      alert("회원가입 실패");
+    }
+  };
+
   return (
     <Wrapper>
       <Card className="p-3" style={{ width: "100%" }}>
-        <Form>
+        <Form onChange={handleFormChanger} onSubmit={handleOnSubmit}>
           <Form.Group as={Row} className="mb-3">
             <Form.Label column sm={3}>
               이름
             </Form.Label>
             <Col sm={10}>
-              <Form.Control type="text" placeholder="Name" />
+              <Form.Control name="username" type="text" placeholder="Name" />
             </Col>
           </Form.Group>
 
@@ -30,7 +68,11 @@ const Register = () => {
               닉네임
             </Form.Label>
             <Col sm={10}>
-              <Form.Control type="text" placeholder="Nickname" />
+              <Form.Control
+                name="nickname"
+                type="text"
+                placeholder="Nickname"
+              />
             </Col>
           </Form.Group>
 
@@ -39,7 +81,7 @@ const Register = () => {
               이메일
             </Form.Label>
             <Col sm={10}>
-              <Form.Control type="email" placeholder="Email" />
+              <Form.Control name="email" type="email" placeholder="Email" />
             </Col>
           </Form.Group>
 
@@ -52,7 +94,11 @@ const Register = () => {
               비밀번호
             </Form.Label>
             <Col sm={10}>
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                name="password"
+                type="password"
+                placeholder="Password"
+              />
             </Col>
           </Form.Group>
 
@@ -65,7 +111,11 @@ const Register = () => {
               비밀번호 확인
             </Form.Label>
             <Col sm={10}>
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                name="checkPassword"
+                type="password"
+                placeholder="Password"
+              />
             </Col>
           </Form.Group>
 
@@ -75,7 +125,6 @@ const Register = () => {
                 type="submit"
                 variant="primary"
                 style={{ color: "white" }}
-                onClick={handleNavigate}
               >
                 회원가입
               </Button>

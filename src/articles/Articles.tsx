@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
 import ArticleTitle from "./ArticleTitle";
 import CustomPagination from "pagination/CustomPagination";
+import { useEffect } from "react";
+import axios from "axios";
+import { LOCAL_HOST } from "constants/constants";
 
 const Articles = () => {
   const mockArticles = [
@@ -34,6 +37,14 @@ const Articles = () => {
     },
   ];
 
+  useEffect(() => {
+    // const response = getArticles();
+  }, []);
+
+  // const getArticles = async () => {
+  //   const response = await axios.get(LOCAL_HOST + "/api/articles");
+  //   console.log(response);
+  // };
   return (
     <Container>
       <div className="p-5" style={{ backgroundColor: "#f8f9fa" }}>
