@@ -3,38 +3,13 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import FriendCard from "./FriendCard";
 import FriendSearchCard from "./FriendSearchCard";
+import { FriendDetailType } from "types/users.type";
 
 const FriendModal: React.FC<{
-  userName: string | null;
+  friends: FriendDetailType[];
   show: boolean;
   handleClose: () => void;
-}> = ({ userName, show, handleClose }) => {
-  const mockFriends = [
-    {
-      id: 1,
-      name: "김완영",
-      email: "dhks2869@gmail.com",
-      nickname: "kimwanyoung",
-    },
-    {
-      id: 1,
-      name: "김완영",
-      email: "dhks2869@gmail.com",
-      nickname: "kimwanyoung",
-    },
-    {
-      id: 1,
-      name: "김완영",
-      email: "dhks2869@gmail.com",
-      nickname: "kimwanyoung",
-    },
-    {
-      id: 1,
-      name: "김완영",
-      email: "dhks2869@gmail.com",
-      nickname: "kimwanyoung",
-    },
-  ];
+}> = ({ friends, show, handleClose }) => {
   return (
     <Modal
       show={show}
@@ -46,8 +21,8 @@ const FriendModal: React.FC<{
         <Modal.Title>검색 결과</Modal.Title>
       </Modal.Header>
 
-      {mockFriends.map((friend) => (
-        <FriendSearchCard {...friend} />
+      {friends.map((friend) => (
+        <FriendSearchCard {...friend} key={friend.id} />
       ))}
     </Modal>
   );

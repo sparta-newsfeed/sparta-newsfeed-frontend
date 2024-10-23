@@ -1,14 +1,19 @@
 import Pagination from "react-bootstrap/Pagination";
 
-const CustomPagination: React.FC<{ page: number; maxPage: number }> = ({
-  page,
-  maxPage,
-}) => {
+const CustomPagination: React.FC<{
+  page: number;
+  maxPage: number;
+  setPage: (page: number) => void;
+}> = ({ page, maxPage, setPage }) => {
   let items = [];
-  for (let number = 1; number <= maxPage; number++) {
+  for (let number = 0; number < maxPage; number++) {
     items.push(
-      <Pagination.Item key={number} active={number === page}>
-        {number}
+      <Pagination.Item
+        key={number}
+        active={number === page}
+        onClick={() => setPage(number)}
+      >
+        {number + 1}
       </Pagination.Item>
     );
   }

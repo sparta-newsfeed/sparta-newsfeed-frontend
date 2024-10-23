@@ -1,3 +1,6 @@
+import axios from "axios";
+import { LOCAL_HOST } from "constants/constants";
+import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { FriendDetailType } from "types/users.type";
 
@@ -7,6 +10,16 @@ const FriendSearchCard: React.FC<FriendDetailType> = ({
   nickname,
   email,
 }) => {
+  const [clicked, setClicked] = useState(false);
+  const handleOnClickAddFriend = async () => {
+    setClicked((prev) => !prev);
+    const response = await axios.post(
+      LOCAL_HOST + `/api/friends/request/${id}`,
+      null
+    );
+
+    console.log(response);
+  };
   return (
     <Modal.Dialog style={{ width: "90%" }} key={id}>
       <Modal.Body>
@@ -16,7 +29,9 @@ const FriendSearchCard: React.FC<FriendDetailType> = ({
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="outline-primary">추가하기</Button>
+        <Button variant="outline-primary" onClick={handleOnClickAddFriend}>
+          {clicked ? "요청됨" : "추가하기"}
+        </Button>
       </Modal.Footer>
     </Modal.Dialog>
   );

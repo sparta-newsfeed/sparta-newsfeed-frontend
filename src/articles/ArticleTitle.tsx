@@ -6,13 +6,20 @@ const ArticleTitle: React.FC<ArticleTitleType> = ({
   id,
   title,
   author,
-  lastUpdatedAt,
-  likeCount,
+  updatedAt,
+  commentCounts,
 }) => {
   const navigate = useNavigate();
 
-  const handleNavigate = (id: number) => {
+  const handleNavigate = () => {
     navigate(`/articles/${id}`);
+  };
+
+  const dateFormat = (stringDate: string) => {
+    const year = new Date(stringDate).getFullYear();
+    const month = new Date(stringDate).getMonth() + 1;
+    const date = new Date(stringDate).getDate();
+    return `${year}-${month}-${date}`;
   };
 
   return (
@@ -20,15 +27,15 @@ const ArticleTitle: React.FC<ArticleTitleType> = ({
       <ListGroup.Item
         as="li"
         className="d-flex justify-content-between align-items-start"
-        onClick={() => handleNavigate(id)}
+        onClick={() => handleNavigate()}
       >
         <div className="ms-2 me-auto">
           <div className="fw-bold">{title}</div>
-          {author}
+          {author.name}
         </div>
-        <div className="me-3 fw-bold">{lastUpdatedAt}</div>
+        <div className="me-3 fw-bold">{dateFormat(updatedAt)}</div>
         <Badge bg="primary" pill>
-          추천 : {likeCount}
+          댓글 수 : {commentCounts}
         </Badge>
       </ListGroup.Item>
     </ListGroup>

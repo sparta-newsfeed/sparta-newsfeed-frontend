@@ -1,3 +1,5 @@
+import axios from "axios";
+import { LOCAL_HOST } from "constants/constants";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -5,6 +7,7 @@ import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
+import { FriendDetailType } from "types/users.type";
 import FriendModal from "user/FriendModal";
 
 function CustomNavbar() {
@@ -12,11 +15,22 @@ function CustomNavbar() {
   const [show, setShow] = useState(false);
   const navigation = useNavigate();
   const location = useLocation();
+  const [friends, setFriends] = useState<FriendDetailType[]>([]);
   const isAuthUrl =
     location.pathname === "/" || location.pathname === "/register";
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const response = await axios.get(
+      LOCAL_HOST + `/api/members/search?username=${userName}`,
+      {
+        withCredentials: true,
+      }
+    );
+    console.log(response);
+    setFriends(response.data.content);
+    setUserName("");
     setShow(true);
   };
 
@@ -32,7 +46,7 @@ function CustomNavbar() {
   return (
     <>
       <FriendModal
-        userName={userName}
+        friends={friends}
         show={show}
         handleClose={handleFriendModalShow}
       />

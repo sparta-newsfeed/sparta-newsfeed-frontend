@@ -1,34 +1,69 @@
 import styled from "@emotion/styled";
-import { Badge, ListGroup } from "react-bootstrap";
+import axios from "axios";
+import { LOCAL_HOST } from "constants/constants";
+import { useState } from "react";
+import { Badge, Button, ListGroup } from "react-bootstrap";
 import { CommentType } from "types/comments.type";
 
 const Comment: React.FC<CommentType> = ({
+  id,
   body,
-  author,
-  lastUpdatedAt,
-  likeCount,
+  nickname,
+  updatedAt,
+  liked,
 }) => {
+  const dateFormat = (stringDate: string) => {
+    const year = new Date(stringDate).getFullYear();
+    const month = new Date(stringDate).getMonth() + 1;
+    const date = new Date(stringDate).getDate();
+    return `${year}-${month}-${date}`;
+  };
+
+  const handleCommentLike = async () => {
+    const response = await axios.post(
+      LOCAL_HOST + `/api/comment/${id}/like`,
+      null,
+      {
+        withCredentials: true,
+      }
+    );
+
+    window.location.reload();
+  };
+
   return (
-    <ListGroup style={{ height: "150px", overflow: "scroll" }}>
+    <ListGroup className="mb-3" style={{ overflow: "scroll" }}>
       <ListGroup.Item
         as="li"
         className="d-flex justify-content-between align-items-start"
       >
-        <div className="ms-2 me-auto">
+        <div>
           <div
-            className="fw-bold"
-            style={{ display: "flex", justifyContent: "space-between" }}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
           >
-            {author}
-            <span className="me-3">{lastUpdatedAt}</span>
+            <span className="me-3 fw-bold">{nickname}</span>
+            <span className="me-3" style={{ fontSize: "small" }}>
+              {dateFormat(updatedAt)}
+            </span>
           </div>
           {body}
         </div>
-        <BadgeWrapper>
-          <Badge bg="primary" pill>
-            추천 : {likeCount}
-          </Badge>
-        </BadgeWrapper>
+        <Button
+          variant={liked ? "primary" : "outline-primary"}
+          style={{
+            width: "60px",
+            height: "30px",
+            fontSize: "10px",
+            fontWeight: "bold",
+          }}
+          onClick={handleCommentLike}
+        >
+          좋아요
+        </Button>
       </ListGroup.Item>
     </ListGroup>
   );

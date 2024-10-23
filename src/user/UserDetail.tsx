@@ -9,12 +9,43 @@ import UpdateUserDetail from "./UpdateUserDetail";
 import { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import Cancellation from "./Cancellation";
+import axios from "axios";
+import { FriendDetailType, UserInfoType } from "types/users.type";
+import { LOCAL_HOST } from "constants/constants";
 
 function UserDetail() {
   const [show, setShow] = useState(true);
+  const [userInfo, setUserInfo] = useState<UserInfoType>({
+    id: 0,
+    name: "",
+    nickname: "",
+    email: "",
+    createdAt: "",
+  });
+  const [friends, setFriends] = useState<FriendDetailType[]>([]);
+  const [requestedFiends, setRequestedFiends] = useState<FriendDetailType[]>(
+    []
+  );
 
   const handleClose = () => setShow(false);
 
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  const getUserInfo = async () => {
+    const response = await axios.get(LOCAL_HOST + "/api/members");
+    const friendsResponse = await axios.get(LOCAL_HOST + "/api/members/friend");
+    const requestFriendsResponse = await axios.get(
+      LOCAL_HOST + "/api/members/wait-friends"
+    );
+
+    setUserInfo(response.data);
+    console.log(friendsResponse);
+    console.log(requestFriendsResponse);
+    setRequestedFiends(requestFriendsResponse.data.content);
+    setFriends(friendsResponse.data.content);
+  };
   return (
     <>
       <Modal show={show}>
@@ -62,18 +93,21 @@ function UserDetail() {
           <Col sm={9}>
             <Tab.Content>
               <Tab.Pane eventKey="first">
-                <UserInfo />
+                <UserInfo {...userInfo} />
               </Tab.Pane>
-              <Tab.Pane
-                eventKey="second"
-                style={{ height: "500px", overflow: "scroll" }}
-              >
-                <FriendCard />
-                <FriendCard />
-                <FriendCard />
-                <FriendCard />
-                <FriendCard />
-                <FriendCard />
+              <Tab.Pane eventKey="second">
+                <h5>친구 목록</h5>
+                <div style={{ height: "400px", overflow: "scroll" }}>
+                  {friends.map((friend) => (
+                    <FriendCard {...friend} type="accept" />
+                  ))}
+                </div>
+                <h5>받은 요청</h5>
+                <div style={{ height: "400px", overflow: "scroll" }}>
+                  {requestedFiends.map((friend) => (
+                    <FriendCard {...friend} type="wait" />
+                  ))}
+                </div>
               </Tab.Pane>
               <Tab.Pane eventKey="third">
                 <UpdateUserDetail />

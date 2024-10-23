@@ -3,6 +3,15 @@ interface FriendDetailType {
   name: string;
   email: string;
   nickname: string;
+  type: string;
 }
 
-export type { FriendDetailType };
+interface UserInfoType {
+  id: number;
+  name: string;
+  nickname: string;
+  email: string;
+  createdAt: string;
+}
+
+export type { FriendDetailType, UserInfoType };

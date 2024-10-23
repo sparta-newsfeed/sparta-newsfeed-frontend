@@ -1,9 +1,27 @@
 interface ArticleTitleType {
   id: number;
   title: string;
-  author: string;
-  lastUpdatedAt: string;
-  likeCount: number;
+  body: string;
+  author: AuthorType;
+  updatedAt: string;
+  commentCounts: number;
 }
 
-export type { ArticleTitleType };
+interface ArticleDetailType {
+  author: AuthorType;
+  body: string;
+  liked: boolean;
+  title: string;
+  updatedAt: string;
+  id: number;
+}
+
+interface AuthorType {
+  id: number;
+  name: string;
+  nickname: string;
+  email: string;
+  createdAt: string;
+}
+
+export type { ArticleTitleType, ArticleDetailType };

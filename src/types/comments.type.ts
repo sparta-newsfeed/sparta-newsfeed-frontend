@@ -1,9 +1,9 @@
 interface CommentType {
   id: number;
-  author: string;
+  nickname: string;
   body: string;
-  lastUpdatedAt: string;
-  likeCount: number;
+  updatedAt: string;
+  liked: boolean;
 }
 
 export type { CommentType };

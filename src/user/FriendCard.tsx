@@ -1,6 +1,33 @@
+import axios from "axios";
+import { LOCAL_HOST } from "constants/constants";
+import React from "react";
 import { Button, Modal } from "react-bootstrap";
+import { FriendDetailType } from "types/users.type";
 
-const FriendCard = () => {
+const FriendCard: React.FC<FriendDetailType> = ({
+  id,
+  name,
+  nickname,
+  email,
+  type,
+}) => {
+  const handleAccept = async () => {
+    const response = await axios.post(
+      LOCAL_HOST + `/api/friends/response/${id}`,
+      null
+    );
+
+    console.log(response);
+    window.location.reload();
+  };
+
+  const handleDelete = async () => {
+    const response = await axios.delete(LOCAL_HOST + `/api/friends/${id}`);
+
+    console.log(response);
+    window.location.reload();
+  };
+
   return (
     <div
       style={{
@@ -17,12 +44,20 @@ const FriendCard = () => {
         }}
       >
         <Modal.Body>
-          <p>이름 : 김완영</p>
-          <p>이메일 : dhks2869@gmail.com</p>
+          <p>이름 : {name}</p>
+          <p>이메일 : {email}</p>
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="outline-primary">삭제하기</Button>
+          {type === "wait" ? (
+            <Button variant="outline-primary" onClick={handleAccept}>
+              수락하기
+            </Button>
+          ) : (
+            <Button variant="outline-primary" onClick={handleDelete}>
+              삭제하기
+            </Button>
+          )}
         </Modal.Footer>
       </Modal.Dialog>
     </div>

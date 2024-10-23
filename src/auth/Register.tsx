@@ -39,14 +39,14 @@ const Register = () => {
         headers: {
           "Content-Type": `application/json`,
         },
+        withCredentials: true,
       }
     );
 
+    console.log(response);
     if (response.status === 200) {
       alert("회원가입 성공");
       navigate("/");
-    } else {
-      alert("회원가입 실패");
     }
   };
 
