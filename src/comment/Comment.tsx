@@ -8,7 +8,7 @@ import { CommentType } from "types/comments.type";
 const Comment: React.FC<CommentType> = ({
   id,
   body,
-  nickname,
+  commenter,
   updatedAt,
   liked,
 }) => {
@@ -45,7 +45,7 @@ const Comment: React.FC<CommentType> = ({
               alignItems: "center",
             }}
           >
-            <span className="me-3 fw-bold">{nickname}</span>
+            <span className="me-3 fw-bold">{commenter.nickname}</span>
             <span className="me-3" style={{ fontSize: "small" }}>
               {dateFormat(updatedAt)}
             </span>
